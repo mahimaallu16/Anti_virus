@@ -1,0 +1,1 @@
+// This file is intentionally left blank because authentication is removed from the application. 
