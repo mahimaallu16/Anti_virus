@@ -1,0 +1,91 @@
+{
+  "false_positive_reduction": {
+    "enabled": true,
+    "whitelist": {
+      "enabled": true,
+      "paths": [
+        "C:\\Windows\\System32\\",
+        "C:\\Windows\\SysWOW64\\",
+        "C:\\Program Files\\",
+        "C:\\Program Files (x86)\\",
+        "C:\\Users\\AppData\\Local\\Microsoft\\",
+        "C:\\Users\\AppData\\Roaming\\Microsoft\\"
+      ],
+      "extensions": [
+        ".txt", ".log", ".ini", ".cfg", ".xml", ".json", ".csv",
+        ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".svg",
+        ".mp3", ".mp4", ".avi", ".mov", ".wmv", ".flv", ".mkv",
+        ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+        ".zip", ".rar", ".7z", ".tar", ".gz", ".bz2"
+      ]
+    },
+    "digital_signature": {
+      "enabled": true,
+      "trust_signed_files": true
+    },
+    "context_analysis": {
+      "enabled": true,
+      "file_age_threshold": 3600,
+      "suspicious_locations": ["temp", "tmp", "downloads", "desktop"],
+      "system_directories": ["system32", "syswow64", "program files"],
+      "min_file_size_suspicious": 1024
+    },
+    "heuristic_thresholds": {
+      "obfuscation_score": 40,
+      "powershell_score": 35,
+      "api_score": 45,
+      "min_total_score": 60,
+      "min_indicators": 2,
+      "trusted_location_reduction": 30
+    },
+    "powershell_detection": {
+      "legitimate_commands": [
+        "get-service", "get-process", "get-computerinfo",
+        "get-wmiobject", "get-ciminstance", "export-csv",
+        "import-csv", "get-content", "set-content", "out-file"
+      ],
+      "suspicious_patterns": [
+        "(Invoke-Expression|IEX)\\s*\\(",
+        "DownloadString\\s*\\(",
+        "FromBase64String\\s*\\(",
+        "New-Object\\s+System\\.Net\\.WebClient",
+        "Start-Process\\s+.*\\s+-WindowStyle\\s+Hidden"
+      ],
+      "require_multiple_suspicious": true
+    },
+    "obfuscation_detection": {
+      "min_base64_length": 200,
+      "check_decoded_content": true,
+      "patterns": [
+        "eval\\s*\\([^)]*\\)",
+        "unescape\\s*\\([^)]*\\)",
+        "String\\.fromCharCode\\s*\\(",
+        "\\\\x[0-9a-fA-F]{2}",
+        "\\\\u[0-9a-fA-F]{4}"
+      ]
+    },
+    "api_detection": {
+      "dangerous_apis": [
+        "CreateRemoteThread", "VirtualAlloc", "WriteProcessMemory",
+        "SetWindowsHookEx", "GetProcAddress", "LoadLibrary",
+        "CreateProcess", "ShellExecute", "WinExec"
+      ],
+      "suspicious_combinations": [
+        ["VirtualAlloc", "WriteProcessMemory"],
+        ["LoadLibrary", "GetProcAddress"],
+        ["CreateRemoteThread", "VirtualAlloc"]
+      ],
+      "require_multiple_apis": true
+    }
+  },
+  "quarantine": {
+    "threshold": 80,
+    "auto_quarantine": true,
+    "require_user_confirmation": false
+  },
+  "logging": {
+    "log_false_positives": true,
+    "log_whitelist_hits": true,
+    "log_context_analysis": true
+  }
+} 

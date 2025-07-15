@@ -1,0 +1,7 @@
+{
+    "auto_update": true,
+    "scan_interval": 3600,
+    "threat_threshold": 50,
+    "real_time": false,
+    "web": false
+}

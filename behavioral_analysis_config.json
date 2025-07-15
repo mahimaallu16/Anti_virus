@@ -1,0 +1,264 @@
+{
+  "behavioral_analysis": {
+    "enabled": true,
+    "scan_timeout": 30,
+    "max_file_size": 104857600,
+    "detection_categories": {
+      "process_injection": {
+        "enabled": true,
+        "score_per_pattern": 15,
+        "patterns": [
+          "CreateRemoteThread",
+          "VirtualAlloc",
+          "WriteProcessMemory",
+          "NtCreateThreadEx",
+          "RtlCreateUserThread",
+          "SetWindowsHookEx",
+          "QueueUserAPC"
+        ]
+      },
+      "persistence": {
+        "enabled": true,
+        "score_per_pattern": 10,
+        "patterns": {
+          "registry_modification": [
+            "RegCreateKey",
+            "RegSetValue",
+            "RegOpenKey",
+            "HKEY_LOCAL_MACHINE",
+            "HKEY_CURRENT_USER",
+            "Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run"
+          ],
+          "service_creation": [
+            "CreateService",
+            "StartService",
+            "OpenService",
+            "ServiceMain",
+            "SERVICE_AUTO_START"
+          ],
+          "scheduled_task": [
+            "CreateScheduledTask",
+            "RegisterTask",
+            "schtasks",
+            "TaskScheduler",
+            "ITaskScheduler"
+          ],
+          "startup_folder": [
+            "Startup",
+            "Start Menu\\\\Programs\\\\Startup",
+            "AppData\\\\Roaming\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\Startup"
+          ]
+        }
+      },
+      "network_communication": {
+        "enabled": true,
+        "score_per_pattern": 8,
+        "patterns": {
+          "http_requests": [
+            "HttpSendRequest",
+            "WinHttpSendRequest",
+            "HttpOpenRequest",
+            "URLDownloadToFile",
+            "URLDownloadToCacheFile"
+          ],
+          "socket_operations": [
+            "socket\\s*\\(",
+            "connect\\s*\\(",
+            "WSAConnect",
+            "send\\s*\\(",
+            "recv\\s*\\(",
+            "bind\\s*\\("
+          ],
+          "dns_queries": [
+            "gethostbyname",
+            "getaddrinfo",
+            "WSAAsyncGetHostByName",
+            "DNS_QUERY",
+            "ResolveHost"
+          ],
+          "url_patterns": [
+            "https?://[^\\s\"']+",
+            "ftp://[^\\s\"']+",
+            "\\\\d{1,3}\\\\.\\\\d{1,3}\\\\.\\\\d{1,3}\\\\.\\\\d{1,3}"
+          ]
+        }
+      },
+      "evasion_techniques": {
+        "enabled": true,
+        "score_per_pattern": 12,
+        "patterns": {
+          "debugger_detection": [
+            "IsDebuggerPresent",
+            "CheckRemoteDebuggerPresent",
+            "NtQueryInformationProcess",
+            "PEB.BeingDebugged"
+          ],
+          "timing_checks": [
+            "GetTickCount",
+            "QueryPerformanceCounter",
+            "GetSystemTime",
+            "time\\s*\\("
+          ],
+          "sleep_operations": [
+            "Sleep\\s*\\(",
+            "SleepEx",
+            "WaitForSingleObject",
+            "delay\\s*\\(",
+            "pause\\s*\\("
+          ],
+          "anti_vm_checks": [
+            "GetSystemFirmwareTable",
+            "EnumSystemFirmwareTables",
+            "GetSystemInfo",
+            "GetComputerName",
+            "GetUserName",
+            "GetVolumeInformation"
+          ]
+        }
+      },
+      "file_operations": {
+        "enabled": true,
+        "score_per_pattern": 5,
+        "patterns": {
+          "file_creation": [
+            "CreateFile",
+            "CreateFileW",
+            "CreateFileA",
+            "fopen",
+            "open\\s*\\("
+          ],
+          "file_writing": [
+            "WriteFile",
+            "fwrite",
+            "write\\s*\\(",
+            "SetFilePointer",
+            "SetEndOfFile"
+          ],
+          "file_deletion": [
+            "DeleteFile",
+            "DeleteFileW",
+            "DeleteFileA",
+            "remove\\s*\\(",
+            "unlink\\s*\\("
+          ],
+          "file_attributes": [
+            "SetFileAttributes",
+            "GetFileAttributes",
+            "SetFileTime",
+            "GetFileTime"
+          ]
+        }
+      },
+      "privilege_escalation": {
+        "enabled": true,
+        "score_per_pattern": 20,
+        "patterns": {
+          "uac_bypass": [
+            "UAC",
+            "User Account Control",
+            "elevate",
+            "runas",
+            "ShellExecute.*runas"
+          ],
+          "token_manipulation": [
+            "OpenProcessToken",
+            "DuplicateTokenEx",
+            "ImpersonateLoggedOnUser",
+            "SetThreadToken"
+          ],
+          "service_privileges": [
+            "SeDebugPrivilege",
+            "SeTcbPrivilege",
+            "SeBackupPrivilege",
+            "SeRestorePrivilege"
+          ]
+        }
+      },
+      "memory_manipulation": {
+        "enabled": true,
+        "score_per_pattern": 8,
+        "patterns": {
+          "memory_allocation": [
+            "VirtualAlloc",
+            "VirtualAllocEx",
+            "HeapAlloc",
+            "malloc",
+            "calloc",
+            "new\\s*\\["
+          ],
+          "memory_protection": [
+            "VirtualProtect",
+            "VirtualProtectEx",
+            "PAGE_EXECUTE_READWRITE",
+            "PAGE_EXECUTE_READ"
+          ],
+          "memory_mapping": [
+            "CreateFileMapping",
+            "MapViewOfFile",
+            "MapViewOfFileEx",
+            "mmap"
+          ]
+        }
+      }
+    },
+    "context_analysis": {
+      "enabled": true,
+      "trusted_locations": [
+        "system32",
+        "syswow64",
+        "program files",
+        "windows",
+        "microsoft",
+        "adobe",
+        "oracle",
+        "intel",
+        "amd"
+      ],
+      "legitimate_software": [
+        "microsoft",
+        "adobe",
+        "oracle",
+        "intel",
+        "amd",
+        "nvidia",
+        "chrome",
+        "firefox",
+        "edge",
+        "office",
+        "visual studio"
+      ],
+      "adjustments": {
+        "trusted_location": -20,
+        "recent_file": 15,
+        "new_file": 8,
+        "small_file": 10,
+        "large_file": 5,
+        "legitimate_software": -15
+      }
+    },
+    "risk_thresholds": {
+      "minimal": 0,
+      "low": 20,
+      "medium": 40,
+      "high": 60,
+      "critical": 80
+    },
+    "detection_thresholds": {
+      "minimum_score": 40,
+      "confidence_threshold": 30,
+      "max_score": 90
+    }
+  },
+  "reporting": {
+    "detailed_reports": true,
+    "include_patterns": true,
+    "include_context": true,
+    "log_behavioral_analysis": true
+  },
+  "performance": {
+    "enable_caching": true,
+    "cache_duration": 3600,
+    "parallel_analysis": true,
+    "max_workers": 4
+  }
+} 

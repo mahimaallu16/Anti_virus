@@ -1,0 +1,193 @@
+{
+  "enterprise_yara": {
+    "general": {
+      "rules_directory": "signatures",
+      "cache_directory": "cache",
+      "max_workers": 4,
+      "update_interval": 3600,
+      "enable_ml_scoring": true,
+      "enable_threat_intelligence": true,
+      "enable_rule_caching": true,
+      "enable_parallel_scanning": true
+    },
+    "rule_categories": {
+      "malware_families": {
+        "enabled": true,
+        "priority": "high",
+        "rules": [
+          "advanced_malware_families.yar",
+          "enterprise_rules.yar"
+        ]
+      },
+      "attack_techniques": {
+        "enabled": true,
+        "priority": "high",
+        "rules": [
+          "advanced_attack_techniques.yar",
+          "enterprise_rules.yar"
+        ]
+      },
+      "file_types": {
+        "enabled": true,
+        "priority": "medium",
+        "rules": [
+          "enterprise_rules.yar"
+        ]
+      },
+      "evasion": {
+        "enabled": true,
+        "priority": "medium",
+        "rules": [
+          "advanced_attack_techniques.yar",
+          "enterprise_rules.yar"
+        ]
+      },
+      "network": {
+        "enabled": true,
+        "priority": "medium",
+        "rules": [
+          "enterprise_rules.yar"
+        ]
+      },
+      "persistence": {
+        "enabled": true,
+        "priority": "high",
+        "rules": [
+          "advanced_attack_techniques.yar",
+          "enterprise_rules.yar"
+        ]
+      },
+      "privilege_escalation": {
+        "enabled": true,
+        "priority": "high",
+        "rules": [
+          "advanced_attack_techniques.yar",
+          "enterprise_rules.yar"
+        ]
+      },
+      "ransomware": {
+        "enabled": true,
+        "priority": "critical",
+        "rules": [
+          "enterprise_rules.yar"
+        ]
+      },
+      "cryptominer": {
+        "enabled": true,
+        "priority": "medium",
+        "rules": [
+          "enterprise_rules.yar"
+        ]
+      },
+      "generic": {
+        "enabled": true,
+        "priority": "low",
+        "rules": [
+          "enterprise_rules.yar"
+        ]
+      }
+    },
+    "scoring": {
+      "severity_weights": {
+        "Critical": 90,
+        "High": 80,
+        "Medium": 60,
+        "Low": 40
+      },
+      "confidence_multipliers": {
+        "High": 1.0,
+        "Medium": 0.8,
+        "Low": 0.6
+      },
+      "string_match_bonus": 2,
+      "max_string_bonus": 10,
+      "ml_weight": 0.3,
+      "threat_intelligence_weight": 0.2,
+      "rule_weight": 0.5
+    },
+    "threat_intelligence": {
+      "enabled": true,
+      "sources": [
+        "virustotal",
+        "abuseipdb",
+        "threatfox",
+        "alienvault",
+        "crowdstrike"
+      ],
+      "update_interval": 1800,
+      "cache_duration": 86400,
+      "api_keys": {
+        "virustotal": "",
+        "abuseipdb": "",
+        "threatfox": "",
+        "alienvault": "",
+        "crowdstrike": ""
+      }
+    },
+    "machine_learning": {
+      "enabled": true,
+      "model_path": "models/yara_ml_model.pkl",
+      "features": [
+        "file_size",
+        "entropy",
+        "string_count",
+        "import_count",
+        "section_count",
+        "timestamp",
+        "compiler_info"
+      ],
+      "threshold": 0.7,
+      "update_interval": 86400
+    },
+    "performance": {
+      "rule_cache_size": 1000,
+      "file_hash_cache_size": 10000,
+      "scan_timeout": 30,
+      "max_file_size": 104857600,
+      "excluded_extensions": [
+        ".tmp",
+        ".log",
+        ".bak",
+        ".old"
+      ],
+      "excluded_directories": [
+        "temp",
+        "cache",
+        "logs"
+      ]
+    },
+    "logging": {
+      "level": "INFO",
+      "file": "logs/enterprise_yara.log",
+      "max_size": 10485760,
+      "backup_count": 5,
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    },
+    "reporting": {
+      "enable_detailed_reports": true,
+      "include_mitre_attck": true,
+      "include_rule_metadata": true,
+      "include_file_hashes": true,
+      "include_threat_intelligence": true,
+      "report_format": "json",
+      "output_directory": "reports"
+    },
+    "updates": {
+      "auto_update": true,
+      "update_sources": [
+        "https://raw.githubusercontent.com/Yara-Rules/rules/master/",
+        "https://raw.githubusercontent.com/Neo23x0/signature-base/master/",
+        "https://raw.githubusercontent.com/elastic/protections/master/"
+      ],
+      "backup_rules": true,
+      "validate_rules": true,
+      "notify_on_update": true
+    },
+    "custom_rules": {
+      "enabled": true,
+      "directory": "custom_rules",
+      "auto_compile": true,
+      "validation": true
+    }
+  }
+} 
